@@ -12,6 +12,7 @@ function coerceMovieList(payload) {
 
 function coerceSingleMovie(payload) {
     if (!payload) return null;
+    if (payload && payload.success === false) return null;
     if (payload.movie && typeof payload.movie === 'object') return payload.movie;
     if (payload.data && typeof payload.data === 'object' && !Array.isArray(payload.data)) return payload.data;
     return payload;
