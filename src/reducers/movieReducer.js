@@ -5,13 +5,18 @@ let initialState = {
       selectedMovie: null
 }
 
+function coerceMovieList(payload) {
+      if (Array.isArray(payload)) return payload;
+      return [];
+}
+
 const movieReducer = (state = initialState, action) => {
       let updated = Object.assign({}, state);
 
       switch(action.type) {
             case constants.FETCH_MOVIES:
-                  updated['movies'] = action.movies;
-                  updated['selectedMovie'] = action.movies[0];
+                  updated['movies'] = coerceMovieList(action.movies);
+                  updated['selectedMovie'] = updated.movies[0] || null;
                   return updated;
             case constants.SET_MOVIE:
                   updated['selectedMovie'] = action.selectedMovie;

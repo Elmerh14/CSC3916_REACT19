@@ -27,14 +27,18 @@ function MovieList() {
         dispatch(setMovie(movie));
     };
 
-    if (!memoizedMovies) { // Use memoizedMovies here
+    if (!Array.isArray(memoizedMovies)) {
         return <div>Loading....</div>;
     }
 
-    return (
-        <Carousel onSelect={handleSelect} className="bg-dark text-light p-4 rounded">
-          {memoizedMovies.map((movie) => (
-            <Carousel.Item key={movie._id}>
+    if (memoizedMovies.length === 0) {
+        return <div>No movies available.</div>;
+    }
+
+        return (
+            <Carousel onSelect={handleSelect} className="bg-dark text-light p-4 rounded">
+              {memoizedMovies.map((movie) => (
+                <Carousel.Item key={movie._id}>
               {/* Use Nav.Link with "as={Link}" to avoid nested anchors */}
               <Nav.Link
                 as={Link}

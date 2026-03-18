@@ -2,6 +2,21 @@ import actionTypes from '../constants/actionTypes';
 //import runtimeEnv from '@mars/heroku-js-runtime-env'
 const env = process.env;
 
+function coerceMovieList(payload) {
+    if (Array.isArray(payload)) return payload;
+    if (payload && Array.isArray(payload.movies)) return payload.movies;
+    if (payload && Array.isArray(payload.data)) return payload.data;
+    if (payload && payload.results && Array.isArray(payload.results)) return payload.results;
+    return [];
+}
+
+function coerceSingleMovie(payload) {
+    if (!payload) return null;
+    if (payload.movie && typeof payload.movie === 'object') return payload.movie;
+    if (payload.data && typeof payload.data === 'object' && !Array.isArray(payload.data)) return payload.data;
+    return payload;
+}
+
 function moviesFetched(movies) {
     return {
         type: actionTypes.FETCH_MOVIES,
@@ -45,8 +60,11 @@ export function fetchMovie(movieId) {
             }
             return response.json()
         }).then((res) => {
-            dispatch(movieFetched(res));
-        }).catch((e) => console.log(e));
+            dispatch(movieFetched(coerceSingleMovie(res)));
+        }).catch((e) => {
+            console.log(e);
+            dispatch(movieFetched(null));
+        });
     }
 }
 
@@ -66,7 +84,10 @@ export function fetchMovies() {
             }
             return response.json()
         }).then((res) => {
-            dispatch(moviesFetched(res));
-        }).catch((e) => console.log(e));
+            dispatch(moviesFetched(coerceMovieList(res)));
+        }).catch((e) => {
+            console.log(e);
+            dispatch(moviesFetched([]));
+        });
     }
 }
