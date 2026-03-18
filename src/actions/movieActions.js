@@ -46,7 +46,8 @@ export function setMovie(movie) {
 
 export function fetchMovie(movieId) {
     return dispatch => {
-        return fetch(`${env.REACT_APP_API_URL}/movies/${movieId}?reviews=true`, {
+        // changed parameter to title to match the backend. Assignments calls for title parameter.
+        return fetch(`${env.REACT_APP_API_URL}/movies/${encodeURIComponent(movieId)}?reviews=true`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',

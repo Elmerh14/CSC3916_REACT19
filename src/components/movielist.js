@@ -40,11 +40,11 @@ function MovieList() {
               {memoizedMovies.map((movie) => (
                 <Carousel.Item key={movie._id}>
               {/* Use Nav.Link with "as={Link}" to avoid nested anchors */}
-              <Nav.Link
-                as={Link}
-                to={`/movie/${movie._id}`}
-                onClick={() => handleClick(movie)}
-              >
+                <Nav.Link
+                  as={Link}
+                  to={`/movie/${encodeURIComponent(movie.title)}`}
+                  onClick={() => handleClick(movie)}
+                >
                 <Image className="image" src={movie.imageUrl} thumbnail />
               </Nav.Link>
               <Carousel.Caption>
